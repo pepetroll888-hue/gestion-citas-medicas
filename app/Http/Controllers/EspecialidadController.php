@@ -10,7 +10,6 @@ class EspecialidadController extends Controller
     public function index()
     {
         $especialidades = Especialidad::all();
-
         return view('especialidades.index', compact('especialidades'));
     }
 
@@ -31,41 +30,42 @@ class EspecialidadController extends Controller
             'descripcion' => $request->descripcion
         ]);
 
-        return redirect('/especialidades');
+        return redirect('/especialidades')->with('success', 'Especialidad registrada con éxito.');
     }
 
     public function show($id)
     {
         $especialidad = Especialidad::findOrFail($id);
-
         return view('especialidades.show', compact('especialidad'));
     }
 
     public function edit($id)
     {
         $especialidad = Especialidad::findOrFail($id);
-
         return view('especialidades.edit', compact('especialidad'));
     }
 
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'nombre' => 'required|max:100',
+            'descripcion' => 'nullable'
+        ]);
+
         $especialidad = Especialidad::findOrFail($id);
+        $especialidad->update([
+            'nombre' => $request->nombre,
+            'descripcion' => $request->descripcion,
+        ]);
 
-        $especialidad->nombre = $request->nombre;
-        $especialidad->descripcion = $request->descripcion;
-
-        $especialidad->save();
-
-        return redirect('/especialidades');
+        return redirect('/especialidades')->with('success', 'Especialidad actualizada con éxito.');
     }
 
     public function destroy($id)
     {
         $especialidad = Especialidad::findOrFail($id);
-
         $especialidad->delete();
 
-        return redirect('/especialidades');
+        return redirect('/especialidades')->with('success', 'Especialidad eliminada correctamente.');
     }
 }

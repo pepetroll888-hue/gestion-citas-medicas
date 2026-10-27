@@ -21,17 +21,13 @@ class ConsultorioController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'numero' => 'required|max:20|unique:consultorios,numero',
-            'ubicacion' => 'required|max:100',
+            'numero' => 'required|max:50',
+            'ubicacion' => 'required|max:255',
         ]);
 
-        Consultorio::create([
-            'numero' => $request->numero,
-            'ubicacion' => $request->ubicacion,
-            'activo' => true
-        ]);
+        Consultorio::create($request->all());
 
-        return redirect('/consultorios');
+        return redirect('/consultorios')->with('success', 'Consultorio registrado con éxito.');
     }
 
     public function show(Consultorio $consultorio)
@@ -47,21 +43,18 @@ class ConsultorioController extends Controller
     public function update(Request $request, Consultorio $consultorio)
     {
         $request->validate([
-            'numero' => 'required|max:20|unique:consultorios,numero,' . $consultorio->id,
-            'ubicacion' => 'required|max:100',
+            'numero' => 'required|max:50',
+            'ubicacion' => 'required|max:255',
         ]);
 
-        $consultorio->update([
-            'numero' => $request->numero,
-            'ubicacion' => $request->ubicacion,
-        ]);
+        $consultorio->update($request->all());
 
-        return redirect('/consultorios');
+        return redirect('/consultorios')->with('success', 'Consultorio actualizado con éxito.');
     }
 
     public function destroy(Consultorio $consultorio)
     {
         $consultorio->delete();
-        return redirect('/consultorios');
+        return redirect('/consultorios')->with('success', 'Consultorio eliminado correctamente.');
     }
 }
