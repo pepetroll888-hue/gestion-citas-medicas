@@ -26,40 +26,46 @@ class EspecialidadController extends Controller
             'descripcion' => 'nullable'
         ]);
 
-        Especialidad::create($request->all());
+        Especialidad::create([
+            'nombre' => $request->nombre,
+            'descripcion' => $request->descripcion
+        ]);
 
-        return redirect()->route('especialidades.index')
-            ->with('success', 'Especialidad creada correctamente');
+        return redirect('/especialidades');
     }
 
-    public function show(Especialidad $especialidad)
+    public function show($id)
     {
+        $especialidad = Especialidad::findOrFail($id);
+
         return view('especialidades.show', compact('especialidad'));
     }
 
-    public function edit(Especialidad $especialidad)
+    public function edit($id)
     {
+        $especialidad = Especialidad::findOrFail($id);
+
         return view('especialidades.edit', compact('especialidad'));
     }
 
-    public function update(Request $request, Especialidad $especialidad)
+    public function update(Request $request, $id)
     {
-        $request->validate([
-            'nombre' => 'required|max:100',
-            'descripcion' => 'nullable'
-        ]);
+        $especialidad = Especialidad::findOrFail($id);
 
-        $especialidad->update($request->all());
+        $especialidad->nombre = $request->nombre;
+        $especialidad->descripcion = $request->descripcion;
 
-        return redirect()->route('especialidades.index')
-            ->with('success', 'Especialidad actualizada correctamente');
+        $especialidad->save();
+
+        return redirect('/especialidades');
     }
 
-    public function destroy(Especialidad $especialidad)
+    public function destroy($id)
     {
+        $especialidad = Especialidad::findOrFail($id);
+
         $especialidad->delete();
 
-        return redirect()->route('especialidades.index')
-            ->with('success', 'Especialidad eliminada correctamente');
+        return redirect('/especialidades');
     }
 }

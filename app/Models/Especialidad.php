@@ -17,4 +17,9 @@ class Especialidad extends Model
     {
         return $this->hasMany(Medico::class);
     }
+
+    public function getRouteKeyName()
+    {
+        return 'id';
+    }
 }

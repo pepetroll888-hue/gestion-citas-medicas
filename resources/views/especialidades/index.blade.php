@@ -13,18 +13,46 @@
 
     <hr>
 
-  @foreach($especialidades as $especialidad)
+    @if(session('success'))
+        <p style="color:green;">
+            {{ session('success') }}
+        </p>
+    @endif
 
-    <div style="border:1px solid black; padding:10px; margin:10px;">
+    @foreach($especialidades as $especialidad)
 
-        <strong>Nombre:</strong>
-        {{ $especialidad->nombre }}
+        <div style="border:1px solid black; padding:10px; margin:10px;">
 
-        <br><br>
+            <strong>Nombre:</strong>
+            {{ $especialidad->nombre }}
 
-        <strong>Descripción:</strong>
-        {{ $especialidad->descripcion }}
+            <br><br>
 
-    </div>
+            <strong>Descripción:</strong>
+            {{ $especialidad->descripcion }}
 
-@endforeach
+            <br><br>
+
+            <a href="{{ route('especialidades.edit', $especialidad->id) }}">
+                Editar
+            </a>
+
+            <form action="{{ route('especialidades.destroy', $especialidad->id) }}"
+                  method="POST"
+                  style="display:inline;">
+
+                @csrf
+                @method('DELETE')
+
+                <button type="submit">
+                    Eliminar
+                </button>
+
+            </form>
+
+        </div>
+
+    @endforeach
+
+</body>
+</html>
