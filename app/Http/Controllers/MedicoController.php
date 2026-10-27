@@ -3,63 +3,53 @@
 namespace App\Http\Controllers;
 
 use App\Models\Medico;
+use App\Models\Especialidad;
 use Illuminate\Http\Request;
 
 class MedicoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $medicos = Medico::with('especialidad')->get();
+
+        return view('medicos.index', compact('medicos'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $especialidades = Especialidad::all();
+
+        return view('medicos.create', compact('especialidades'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        Medico::create([
+            'nombre' => $request->nombre,
+            'apellido_paterno' => $request->apellido_paterno,
+            'apellido_materno' => $request->apellido_materno,
+            'telefono' => $request->telefono,
+            'correo' => $request->correo,
+            'especialidad_id' => $request->especialidad_id,
+            'activo' => true
+        ]);
+
+        return redirect('/medicos');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Medico $medico)
+    public function show($id)
     {
-        //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Medico $medico)
+    public function edit($id)
     {
-        //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Medico $medico)
+    public function update(Request $request, $id)
     {
-        //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Medico $medico)
+    public function destroy($id)
     {
-        //
     }
 }

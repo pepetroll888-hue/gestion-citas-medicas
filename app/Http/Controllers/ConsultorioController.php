@@ -7,59 +7,61 @@ use Illuminate\Http\Request;
 
 class ConsultorioController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $consultorios = Consultorio::all();
+        return view('consultorios.index', compact('consultorios'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('consultorios.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'numero' => 'required|max:20|unique:consultorios,numero',
+            'ubicacion' => 'required|max:100',
+        ]);
+
+        Consultorio::create([
+            'numero' => $request->numero,
+            'ubicacion' => $request->ubicacion,
+            'activo' => true
+        ]);
+
+        return redirect('/consultorios');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Consultorio $consultorio)
     {
-        //
+        return view('consultorios.show', compact('consultorio'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Consultorio $consultorio)
     {
-        //
+        return view('consultorios.edit', compact('consultorio'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Consultorio $consultorio)
     {
-        //
+        $request->validate([
+            'numero' => 'required|max:20|unique:consultorios,numero,' . $consultorio->id,
+            'ubicacion' => 'required|max:100',
+        ]);
+
+        $consultorio->update([
+            'numero' => $request->numero,
+            'ubicacion' => $request->ubicacion,
+        ]);
+
+        return redirect('/consultorios');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Consultorio $consultorio)
     {
-        //
+        $consultorio->delete();
+        return redirect('/consultorios');
     }
 }

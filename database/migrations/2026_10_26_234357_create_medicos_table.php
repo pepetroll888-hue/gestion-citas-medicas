@@ -27,7 +27,7 @@ return new class extends Migration
 
             $table->foreignId('especialidad_id')
                   ->constrained('especialidades')
-                  ->onDelete('restrict');
+                  ->onDelete('no action');
 
             $table->boolean('activo')->default(true);
 

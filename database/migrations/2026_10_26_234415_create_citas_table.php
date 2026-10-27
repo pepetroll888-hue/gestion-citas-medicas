@@ -17,15 +17,15 @@ return new class extends Migration
 
             $table->foreignId('paciente_id')
                 ->constrained('pacientes')
-                ->onDelete('restrict');
+                ->onDelete('no action');
 
             $table->foreignId('medico_id')
                 ->constrained('medicos')
-                ->onDelete('restrict');
+                ->onDelete('no action');
 
             $table->foreignId('consultorio_id')
                 ->constrained('consultorios')
-                ->onDelete('restrict');
+                ->onDelete('no action');
 
             $table->date('fecha');
 
